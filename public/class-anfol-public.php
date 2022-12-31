@@ -100,4 +100,11 @@ class Anfol_Public {
 
 	}
 
+    public function tablepress_chants_buy_button($cell_content, $table_id, $row_idx, $col_idx) {
+        if ($table_id === 'chants' && $col_idx === 7 && stripos($cell_content, 'http') === 0) {
+            return "<a href='$cell_content' target='_blank' class='acheter-chants'>Acheter</a>";
+        }
+        return $cell_content;
+    }
+
 }
