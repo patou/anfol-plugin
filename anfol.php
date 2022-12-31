@@ -16,6 +16,7 @@
  * Plugin Name:       Anfol
  * Plugin URI:        https://github.com/patou/anfol-plugin
  * GitHub Plugin URI: https://github.com/patou/anfol-plugin
+ * Primary Branch:    main
  * Description:       Plugin wordpress pour la gestion de l'association de l'ANFOL.
  * Version:           1.0.0
  * Author:            Patrice de Saint Steban
