@@ -107,6 +107,12 @@ class Anfol_Admin {
         }
         remove_submenu_page( 'options-general.php', 'git-updater-pricing' );
         remove_submenu_page( 'mailpoet-newsletters', 'mailpoet-upgrade' );
+        remove_submenu_page( 'wpforms-overview', 'mailpoet-upgrade' );
+        remove_submenu_page( 'wphb', 'wphb-upgrade' );
+        remove_submenu_page( 'wphb', 'wphb-tutorials' );
+        remove_submenu_page( 'wpseo_dashboard', 'wpseo_workouts' );
+        remove_submenu_page( 'wpseo_dashboard', 'wpseo_redirects' );
+        remove_submenu_page( 'mailpoet-newsletters', 'mailpoet-automation' );
     }
 
 }
