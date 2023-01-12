@@ -100,4 +100,13 @@ class Anfol_Admin {
 
 	}
 
+    public function remove_menu() {
+        if ( class_exists( 'Jetpack' ) && ! current_user_can( 'manage_options' ) && is_admin() && is_user_logged_in() ) {
+            remove_menu_page( 'jetpack' );
+            remove_menu_page( 'wpseo_workouts' );
+        }
+        remove_submenu_page( 'options-general.php', 'git-updater-pricing' );
+        remove_submenu_page( 'mailpoet-newsletters', 'mailpoet-upgrade' );
+    }
+
 }
