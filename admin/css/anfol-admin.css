@@ -8,3 +8,8 @@
     background-color: #0073aa !important;
     color: #fff;
 }
+
+.order-status.status-to-shipping {
+    background: #84c5f9;
+    color: #2271b1
+}

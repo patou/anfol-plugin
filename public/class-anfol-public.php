@@ -107,4 +107,47 @@ class Anfol_Public {
         return $cell_content;
     }
 
+	public function register_to_shipping_order_status() {
+		register_post_status( 'wc-to-shipping', array(
+			'label'                     => 'À livrer',
+			'public'                    => true,
+			'show_in_admin_status_list' => true,
+			'show_in_admin_all_list'    => true,
+			'exclude_from_search'       => false,
+			'label_count'               => _n_noop( 'À livrer <span class="count">(%s)</span>', 'À livrer <span class="count">(%s)</span>' )
+		) );
+	}
+
+	public function add_to_shipping_to_order_statuses( $order_statuses ) {
+		$new_order_statuses = array();
+		foreach ( $order_statuses as $key => $status ) {
+			$new_order_statuses[ $key ] = $status;
+			if ( 'wc-processing' === $key ) {
+				$new_order_statuses['wc-to-shipping'] = 'À livrer';
+			}
+		}
+		return $new_order_statuses;
+	 }
+
+	public function change_order_status_to_shipping($order_id, $from, $to, $order) {
+		if ($to !== 'processing') return;
+		$has_to_shipping = false;
+
+        foreach ( $order->get_items() as $item ) {
+            $product = $item->get_product();
+
+            if ( ! $product->is_virtual() ) {
+                $has_to_shipping = true;
+                break;
+            }
+        }
+
+        if ( $has_to_shipping ) {
+            $order->update_status( 'wc-to-shipping' );
+        }
+		else {
+			$order->update_status( 'completed' );
+		}
+	}
+
 }

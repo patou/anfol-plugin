@@ -174,6 +174,9 @@ class Anfol {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
         $this->loader->add_action( 'tablepress_cell_content', $plugin_public, 'tablepress_chants_buy_button', 10, 4);
+		$this->loader->add_action('init', $plugin_public, 'register_to_shipping_order_status');
+		$this->loader->add_action('wc_order_statuses', $plugin_public, 'add_to_shipping_to_order_statuses');
+		$this->loader->add_action('woocommerce_order_status_changed', $plugin_public, 'change_order_status_to_shipping', 10, 4);
 
 	}
 
