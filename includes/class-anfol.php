@@ -157,7 +157,8 @@ class Anfol {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
         $this->loader->add_action( 'admin_menu', $plugin_admin, 'remove_menu', 999 );
-
+		$this->loader->add_action( 'woocommerce_admin_order_actions', $plugin_admin, 'order_actions_to_shipping', 10, 2 );
+		$this->loader->add_action( 'woocommerce_admin_order_preview_actions', $plugin_admin, 'order_preview_actions_to_shipping', 10, 2 );
 	}
 
 	/**

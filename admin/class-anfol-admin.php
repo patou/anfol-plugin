@@ -115,4 +115,28 @@ class Anfol_Admin {
         remove_submenu_page( 'mailpoet-newsletters', 'mailpoet-automation' );
     }
 
+	public function order_actions_to_shipping($actions, $order) {
+		if ( $order->has_status( 'to-shipping' ) ) {
+			$actions['complete'] = array(
+				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=completed&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+				'name'   => __( 'Complete', 'woocommerce' ),
+				'action' => 'complete',
+			);
+		}
+		return $actions;
+	}
+
+	public function order_preview_actions_to_shipping($status_actions, $order) {
+		if ( $order->has_status( 'to-shipping' ) ) {
+			$status_actions['complete'] = array(
+				'url'    => wp_nonce_url( admin_url( 'admin-ajax.php?action=woocommerce_mark_order_status&status=completed&order_id=' . $order->get_id() ), 'woocommerce-mark-order-status' ),
+				'name'   => __( 'Completed', 'woocommerce' ),
+				'title'  => __( 'Change order status to completed', 'woocommerce' ),
+				'action' => 'complete',
+			);
+		}
+		return $status_actions;
+	}
+
+
 }
