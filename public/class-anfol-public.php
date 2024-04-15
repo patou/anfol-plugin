@@ -143,7 +143,7 @@ class Anfol_Public {
         }
 
         if ( $has_to_shipping ) {
-            $order->update_status( 'wc-to-shipping' );
+            $order->update_status( 'to-shipping' );
         }
 		else {
 			$order->update_status( 'completed' );

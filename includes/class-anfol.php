@@ -177,7 +177,13 @@ class Anfol {
 		$this->loader->add_action('init', $plugin_public, 'register_to_shipping_order_status');
 		$this->loader->add_action('wc_order_statuses', $plugin_public, 'add_to_shipping_to_order_statuses');
 		$this->loader->add_action('woocommerce_order_status_changed', $plugin_public, 'change_order_status_to_shipping', 10, 4);
+		$this->loader->add_action('woocommerce_email_classes', $this, 'register_order_to_shipping_email');
+	}
 
+	function register_order_to_shipping_email( $email_classes ) {
+		include_once("class-anfol-to-shipping-email.php");
+		$email_classes['wc_to_shipping'] = new WC_Email_Commande_ToShipping();
+		return $email_classes;
 	}
 
 	/**
