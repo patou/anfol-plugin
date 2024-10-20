@@ -100,6 +100,15 @@ class Anfol_Public {
 
 	}
 
+	/**
+	 * Affiche un lien d'achat pour les chants dans les tableau d'id chants
+	 * 
+	 * @param mixed $cell_content
+	 * @param mixed $table_id
+	 * @param mixed $row_idx
+	 * @param mixed $col_idx
+	 * @return mixed
+	 */
     public function tablepress_chants_buy_button($cell_content, $table_id, $row_idx, $col_idx) {
         if ($table_id === 'chants' && $col_idx === 7 && stripos($cell_content, 'http') === 0) {
             return "<a href='$cell_content' target='_blank' class='acheter-chants'>Acheter</a>";
@@ -107,6 +116,11 @@ class Anfol_Public {
         return $cell_content;
     }
 
+	/**
+	 * Ajoute un nouveau type de statut de commande : A livrer
+	 * 
+	 * @return void
+	 */
 	public function register_to_shipping_order_status() {
 		register_post_status( 'wc-to-shipping', array(
 			'label'                     => 'À livrer',

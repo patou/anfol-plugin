@@ -27,7 +27,8 @@
  * @subpackage Anfol/includes
  * @author     Patrice de Saint Steban <patrice@desaintsteban.fr>
  */
-class Anfol {
+class Anfol
+{
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -66,8 +67,9 @@ class Anfol {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
-		if ( defined( 'ANFOL_VERSION' ) ) {
+	public function __construct()
+	{
+		if (defined('ANFOL_VERSION')) {
 			$this->version = ANFOL_VERSION;
 		} else {
 			$this->version = '1.0.0';
@@ -97,30 +99,31 @@ class Anfol {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function load_dependencies()
+	{
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-anfol-loader.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-anfol-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-anfol-i18n.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-anfol-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-anfol-admin.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-anfol-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-anfol-public.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-anfol-public.php';
 
 		$this->loader = new Anfol_Loader();
 
@@ -135,11 +138,12 @@ class Anfol {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
+	private function set_locale()
+	{
 
 		$plugin_i18n = new Anfol_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
 
 	}
 
@@ -150,15 +154,20 @@ class Anfol {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function define_admin_hooks()
+	{
 
-		$plugin_admin = new Anfol_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Anfol_Admin($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        $this->loader->add_action( 'admin_menu', $plugin_admin, 'remove_menu', 999 );
-		$this->loader->add_action( 'woocommerce_admin_order_actions', $plugin_admin, 'order_actions_to_shipping', 10, 2 );
-		$this->loader->add_action( 'woocommerce_admin_order_preview_actions', $plugin_admin, 'order_preview_actions_to_shipping', 10, 2 );
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+		$this->loader->add_action('admin_menu', $plugin_admin, 'remove_menu', 999);
+		$this->loader->add_action('woocommerce_admin_order_actions', $plugin_admin, 'order_actions_to_shipping', 10, 2);
+		$this->loader->add_action('woocommerce_admin_order_preview_actions', $plugin_admin, 'order_preview_actions_to_shipping', 10, 2);
+		$this->loader->add_filter('bulk_actions-edit-shop_subscription', $plugin_admin, 'update_subscription_price_add_custom_bulk_action');
+		$this->loader->add_action('load-edit.php', $plugin_admin, 'update_subscription_price_parse_bulk_actions');
+		$this->loader->add_filter('handle_bulk_actions-edit-shop_subscription', $plugin_admin, 'update_subscription_price_handle_custom_bulk_action', 10, 3);
+		$this->loader->add_action('admin_notices', $plugin_admin, 'update_subscription_price_custom_bulk_action_admin_notice');
 	}
 
 	/**
@@ -168,20 +177,22 @@ class Anfol {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks()
+	{
 
-		$plugin_public = new Anfol_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Anfol_Public($this->get_plugin_name(), $this->get_version());
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-        $this->loader->add_action( 'tablepress_cell_content', $plugin_public, 'tablepress_chants_buy_button', 10, 4);
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+		$this->loader->add_action('tablepress_cell_content', $plugin_public, 'tablepress_chants_buy_button', 10, 4);
 		$this->loader->add_action('init', $plugin_public, 'register_to_shipping_order_status');
 		$this->loader->add_action('wc_order_statuses', $plugin_public, 'add_to_shipping_to_order_statuses');
 		$this->loader->add_action('woocommerce_order_status_changed', $plugin_public, 'change_order_status_to_shipping', 10, 4);
 		$this->loader->add_action('woocommerce_email_classes', $this, 'register_order_to_shipping_email');
 	}
 
-	function register_order_to_shipping_email( $email_classes ) {
+	function register_order_to_shipping_email($email_classes)
+	{
 		include_once("class-anfol-to-shipping-email.php");
 		$email_classes['wc_to_shipping'] = new WC_Email_Commande_ToShipping();
 		return $email_classes;
@@ -192,7 +203,8 @@ class Anfol {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
+	public function run()
+	{
 		$this->loader->run();
 	}
 
@@ -203,7 +215,8 @@ class Anfol {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -213,7 +226,8 @@ class Anfol {
 	 * @since     1.0.0
 	 * @return    Anfol_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -223,7 +237,8 @@ class Anfol {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function get_version()
+	{
 		return $this->version;
 	}
 
