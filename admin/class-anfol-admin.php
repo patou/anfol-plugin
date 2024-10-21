@@ -212,9 +212,7 @@ class Anfol_Admin
 
 					// Mettre à jour le prix de l'article de l'abonnement
 					$item->set_subtotal($new_price);
-					$item->set_subtotal_tax('');
 					$item->set_total($new_price);
-					$item->set_total_tax('');	
 					$item->calculate_taxes();
 					$item->save();
 					$update_count++;
